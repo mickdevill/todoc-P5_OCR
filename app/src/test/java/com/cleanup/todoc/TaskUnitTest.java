@@ -1,8 +1,17 @@
 package com.cleanup.todoc;
 
-import com.cleanup.todoc.model.Task;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.room.Room;
 
-import org.junit.Test;
+import com.cleanup.todoc.DB.DB;
+import com.cleanup.todoc.DB.Repository;
+import com.cleanup.todoc.DB.TaskDAO;
+import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.ui.MainViewModel;
+
+import org.junit.BeforeClass;
+import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,18 +21,44 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(JUnit4.class)
 /**
  * Unit tests for tasks
  *
  * @author Gaëtan HERFRAY
  */
 public class TaskUnitTest {
-    @Test
+
+@Test
     public void test_projects() {
-        final Task task1 = new Task(1, 1, "task 1", new Date().getTime());
-        final Task task2 = new Task(2, 2, "task 2", new Date().getTime());
-        final Task task3 = new Task(3, 3, "task 3", new Date().getTime());
-        final Task task4 = new Task(4, 4, "task 4", new Date().getTime());
+        Task task1 = new Task();
+        task1.projectId = 1;
+        task1.name = "aaa";
+        task1.creationTimestamp = 123;
+
+        Task task2 = new Task();
+        task2.projectId = 2;
+        task2.name = "zzz";
+        task2.creationTimestamp = 124;
+
+        Task task3 = new Task();
+        task3.projectId = 3;
+        task3.name = "hhh";
+        task3.creationTimestamp = 125;
+
+        Task task4 = new Task();
+        task4.projectId = 4;
+        task4.name = "WRRRRYYYYYYYYY";
+        task4.creationTimestamp = 126;
 
         assertEquals("Projet Tartampion", task1.getProject().getName());
         assertEquals("Projet Lucidia", task2.getProject().getName());
@@ -33,11 +68,23 @@ public class TaskUnitTest {
 
     @Test
     public void test_az_comparator() {
-        final Task task1 = new Task(1, 1, "aaa", 123);
-        final Task task2 = new Task(2, 2, "zzz", 124);
-        final Task task3 = new Task(3, 3, "hhh", 125);
 
-        final ArrayList<Task> tasks = new ArrayList<>();
+        Task task1 = new Task();
+        task1.projectId = 1;
+        task1.name = "aaa";
+        task1.creationTimestamp = 123;
+
+        Task task2 = new Task();
+        task2.projectId = 2;
+        task2.name = "zzz";
+        task2.creationTimestamp = 124;
+
+        Task task3 = new Task();
+        task3.projectId = 3;
+        task3.name = "hhh";
+        task3.creationTimestamp = 125;
+
+        ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task1);
         tasks.add(task2);
         tasks.add(task3);
@@ -50,9 +97,20 @@ public class TaskUnitTest {
 
     @Test
     public void test_za_comparator() {
-        final Task task1 = new Task(1, 1, "aaa", 123);
-        final Task task2 = new Task(2, 2, "zzz", 124);
-        final Task task3 = new Task(3, 3, "hhh", 125);
+        Task task1 = new Task();
+        task1.projectId = 1;
+        task1.name = "aaa";
+        task1.creationTimestamp = 123;
+
+        Task task2 = new Task();
+        task2.projectId = 2;
+        task2.name = "zzz";
+        task2.creationTimestamp = 124;
+
+        Task task3 = new Task();
+        task3.projectId = 3;
+        task3.name = "hhh";
+        task3.creationTimestamp = 125;
 
         final ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task1);
@@ -67,9 +125,20 @@ public class TaskUnitTest {
 
     @Test
     public void test_recent_comparator() {
-        final Task task1 = new Task(1, 1, "aaa", 123);
-        final Task task2 = new Task(2, 2, "zzz", 124);
-        final Task task3 = new Task(3, 3, "hhh", 125);
+        Task task1 = new Task();
+        task1.projectId = 1;
+        task1.name = "aaa";
+        task1.creationTimestamp = 123;
+
+        Task task2 = new Task();
+        task2.projectId = 2;
+        task2.name = "zzz";
+        task2.creationTimestamp = 124;
+
+        Task task3 = new Task();
+        task3.projectId = 3;
+        task3.name = "hhh";
+        task3.creationTimestamp = 125;
 
         final ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task1);
@@ -84,9 +153,20 @@ public class TaskUnitTest {
 
     @Test
     public void test_old_comparator() {
-        final Task task1 = new Task(1, 1, "aaa", 123);
-        final Task task2 = new Task(2, 2, "zzz", 124);
-        final Task task3 = new Task(3, 3, "hhh", 125);
+        Task task1 = new Task();
+        task1.projectId = 1;
+        task1.name = "aaa";
+        task1.creationTimestamp = 123;
+
+        Task task2 = new Task();
+        task2.projectId = 2;
+        task2.name = "zzz";
+        task2.creationTimestamp = 124;
+
+        Task task3 = new Task();
+        task3.projectId = 3;
+        task3.name = "hhh";
+        task3.creationTimestamp = 125;
 
         final ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task1);
@@ -98,4 +178,6 @@ public class TaskUnitTest {
         assertSame(tasks.get(1), task2);
         assertSame(tasks.get(2), task3);
     }
+
+
 }
