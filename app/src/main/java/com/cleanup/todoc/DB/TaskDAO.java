@@ -16,6 +16,8 @@ public interface TaskDAO {
     @Query("SELECT * FROM zadachi")
     LiveData<List<Task>> getLiveData();
 
+
+
     @Insert
     void insert(Task task);
 

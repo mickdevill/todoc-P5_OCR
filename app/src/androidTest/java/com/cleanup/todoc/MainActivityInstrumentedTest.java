@@ -151,4 +151,8 @@ onView(withId(R.id.list_tasks)).check(matches(hasChildCount(3)));
     onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.img_delete)).perform(click());
     }
 
+@Test
+    public void DaoSide(){
+
+}
 }
