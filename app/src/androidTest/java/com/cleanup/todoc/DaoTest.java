@@ -20,10 +20,10 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 import java.util.List;
 
-import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
+//the liveData (semi utit) tests, it use the dbTestUtil for manipulation with liveData
 @RunWith(AndroidJUnit4.class)
 public class DaoTest {
 
@@ -55,11 +55,7 @@ public class DaoTest {
 
     @Test
     public void insertionTest() throws Exception {
-        Task task = new Task();
-        task.projectId = 2;
-        task.name = "zzz";
-        task.creationTimestamp = 124;
-
+        Task task = new Task(2, "zzz", 124);
         this.db.taskDAO().insert(task);
 
         List<Task> tasks = dbTestUtil.getValue(this.db.taskDAO().getLiveData());
@@ -69,16 +65,15 @@ public class DaoTest {
 
     @Test
     public void removeTasks() throws Exception {
-        Task task = new Task();
-        task.projectId = 2;
-        task.name = "zzz";
-        task.creationTimestamp = 124;
+        Task task = new Task(2, "zzz", 124);
 
         this.db.taskDAO().insert(task);
+        List<Task> tasksT = dbTestUtil.getValue(this.db.taskDAO().getLiveData());
+        assertTrue(tasksT.size() == 1);
         this.db.taskDAO().delete(task);
 
-        List<Task> tasks = dbTestUtil.getValue(this.db.taskDAO().getLiveData());
-        assertFalse(tasks.contains(task));
+        List<Task> tasksF = dbTestUtil.getValue(this.db.taskDAO().getLiveData());
+        assertFalse(tasksF.contains(task));
 
     }
 

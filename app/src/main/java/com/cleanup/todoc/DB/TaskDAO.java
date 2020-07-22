@@ -12,15 +12,15 @@ import java.util.List;
 
 @Dao
 public interface TaskDAO {
-
-    @Query("SELECT * FROM zadachi")
+    //query to get live data list of DB
+    @Query("SELECT * FROM tasks")
     LiveData<List<Task>> getLiveData();
 
-
-
+    //insert new tast
     @Insert
     void insert(Task task);
 
+    //remove task
     @Delete
     void delete(Task task);
 

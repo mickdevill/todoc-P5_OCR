@@ -7,18 +7,20 @@ import androidx.room.Room;
 import com.cleanup.todoc.DB.DB;
 import com.cleanup.todoc.DB.TaskDAO;
 
+//the singlton class where DB is builded and accessible by instance of this class, and it's used in repository, this class is extending Application,
+// so it start first in app(watch the manifest, i declared it inside)
 public class AppST extends Application {
 
     private DB database;
     private TaskDAO taskDAO;
 
-    private static  AppST instance;
+    private static AppST instance;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-instance = this;
+        instance = this;
 
 
         database = Room.databaseBuilder(getApplicationContext(),

@@ -4,6 +4,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+//the project class, that class can't be entity, because if i make it entity it will be monkey business, this class contain all what i need
+//to make DB integration
 public class Project {
 
     private final long id;
@@ -20,6 +22,7 @@ public class Project {
         this.color = color;
     }
 
+    //the get all project used to assign project to task with id
     @NonNull
     public static Project[] getAllProjects() {
         return new Project[]{
@@ -29,7 +32,7 @@ public class Project {
         };
     }
 
-
+    //its used in recyclerview, and called from task class
     @Nullable
     public static Project getProjectById(long id) {
         for (Project project : getAllProjects()) {

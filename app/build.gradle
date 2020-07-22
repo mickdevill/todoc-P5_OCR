@@ -12,6 +12,7 @@ android {
     }
     buildTypes {
         release {
+            //the gradle thing for proguard, i use the default proguard
             minifyEnabled true
             proguardFiles 'proguard-rules.pro', getDefaultProguardFile('proguard-android-optimize.txt')
         }

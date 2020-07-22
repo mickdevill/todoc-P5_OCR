@@ -2,14 +2,6 @@ package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +11,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cleanup.todoc.AppST;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
@@ -30,11 +30,11 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
-   //обьявления метода масива с типом данных проэкт, масив направляет на к методу в проэкте который создает масив с проэктами
+    //the method used in add task part, to gat project and assign right id to the new task
     private final Project[] allProjects = Project.getAllProjects();
 
     @NonNull
-    private  List<Task> tasksList = new ArrayList<>();
+    private List<Task> tasksList = new ArrayList<>();
 
     TasksAdapter adapter = new TasksAdapter(tasksList, this);
 
@@ -69,23 +69,23 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         super.onCreate(savedInstanceState);
 
 
-
         setContentView(R.layout.activity_main);
 
         listTasks = findViewById(R.id.list_tasks);
         lblNoTasks = findViewById(R.id.lbl_no_task);
 
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-listTasks.setAdapter(adapter);
-       mvm = ViewModelProviders.of(this).get(MainViewModel.class);
-       mvm.getLVD().observe(this, new Observer<List<Task>>() {
-           @Override
-           public void onChanged(List<Task> tasks) {
+        listTasks.setAdapter(adapter);
+        //get live data and use it for recyclerview, by writing "tasksList = tasks;" in onChanged
+        mvm = ViewModelProviders.of(this).get(MainViewModel.class);
+        mvm.getLVD().observe(this, new Observer<List<Task>>() {
+            @Override
+            public void onChanged(List<Task> tasks) {
 
-tasksList = tasks;
-           updateTasks();
-           }
-       });
+                tasksList = tasks;
+                updateTasks();
+            }
+        });
 
         findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,11 +119,12 @@ tasksList = tasks;
 
         return super.onOptionsItemSelected(item);
     }
-//метод по удаленью таска из адаптера, происходит через интерфейс который имлементирует мейн и который был обьявлен в адаптере
+
+
     @Override
     public void onDeleteTask(Task task) {
-
-mvm.delete(task);
+//the removing of task, called from MainViewModel(mvm)
+        mvm.delete(task);
         updateTasks();
     }
 
@@ -146,19 +147,16 @@ mvm.delete(task);
             // If both project and name of the task have been set
             else if (taskProject != null) {
 
-
-                Task task = new Task();
-                task.projectId =  taskProject.getId();
-                task.name = taskName;
-                task.creationTimestamp = new Date().getTime();
-mvm.insert(task);
+//the adding of new task using view model
+                Task task = new Task(taskProject.getId(), taskName, new Date().getTime());
+                mvm.insert(task);
 
 
-updateTasks();
+                updateTasks();
                 dialogInterface.dismiss();
             }
             // If name has been set, but project has not been set (this should never occur)
-            else{
+            else {
                 dialogInterface.dismiss();
             }
         }
@@ -183,7 +181,8 @@ updateTasks();
         tasksList.add(task);
         updateTasks();
     }
-//метод по апдейту тасков, если список пуст, то ставит ту картинку, если список содержит элементы то мы видем ресайклер
+
+    //метод по апдейту тасков, если список пуст, то ставит ту картинку, если список содержит элементы то мы видем ресайклер
     private void updateTasks() {
         //поставить картинку тасков нету
         if (tasksList.size() == 0) {
@@ -257,7 +256,8 @@ updateTasks();
 
         return dialog;
     }
-//адаптер для спинера который использует масив из класса прожект обльявленый в самом вкрху мейна
+
+    //адаптер для спинера который использует масив из класса прожект обльявленый в самом вкрху мейна
     private void populateDialogSpinner() {
         final ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allProjects);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

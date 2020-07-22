@@ -1,12 +1,12 @@
 package com.cleanup.todoc;
 
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
 import com.cleanup.todoc.ui.MainActivity;
 
@@ -31,6 +31,7 @@ import static org.junit.Assert.assertThat;
  * @author Gaëtan HERFRAY
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+//independent tests adapted(I fix them) for testing of app with DB
 @RunWith(AndroidJUnit4.class)
 public class MainActivityInstrumentedTest {
     @Rule
@@ -127,32 +128,30 @@ public class MainActivityInstrumentedTest {
         onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.img_delete)).perform(click());
 
 
-
     }
-@Test
-    public void rotationOfScren(){
-    onView(withId(R.id.fab_add_task)).perform(click());
-    onView(withId(R.id.txt_task_name)).perform(replaceText("aaa Tâche example"));
-    onView(withId(android.R.id.button1)).perform(click());
-    onView(withId(R.id.fab_add_task)).perform(click());
-    onView(withId(R.id.txt_task_name)).perform(replaceText("zzz Tâche example"));
-    onView(withId(android.R.id.button1)).perform(click());
-    onView(withId(R.id.fab_add_task)).perform(click());
-    onView(withId(R.id.txt_task_name)).perform(replaceText("hhh Tâche example"));
-    onView(withId(android.R.id.button1)).perform(click());
 
+    //this is the only test i write in this class
+    @Test
+    public void rotationOfScren() {
+        onView(withId(R.id.fab_add_task)).perform(click());
+        onView(withId(R.id.txt_task_name)).perform(replaceText("aaa Tâche example"));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.fab_add_task)).perform(click());
+        onView(withId(R.id.txt_task_name)).perform(replaceText("zzz Tâche example"));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.fab_add_task)).perform(click());
+        onView(withId(R.id.txt_task_name)).perform(replaceText("hhh Tâche example"));
+        onView(withId(android.R.id.button1)).perform(click());
+//the screen rotation to be sure the app is not a POC
         MainActivity activity = rule.getActivity();
-    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-onView(withId(R.id.list_tasks)).check(matches(hasChildCount(3)));
+        onView(withId(R.id.list_tasks)).check(matches(hasChildCount(3)));
 
-    onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.img_delete)).perform(click());
-    onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.img_delete)).perform(click());
-    onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.img_delete)).perform(click());
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.img_delete)).perform(click());
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.img_delete)).perform(click());
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.img_delete)).perform(click());
     }
 
-@Test
-    public void DaoSide(){
 
-}
 }
